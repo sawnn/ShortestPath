@@ -1,7 +1,7 @@
 package com.example.myapplication
 
 fun main(args: Array<String>) {
-    val graph = arrayOf(
+    var graph = arrayOf(
         intArrayOf(0, 4, 0, 0, 0, 0, 0, 8, 0),
         intArrayOf(4, 0, 8, 0, 0, 0, 0, 11, 0),
         intArrayOf(0, 8, 0, 7, 0, 4, 0, 0, 2),
@@ -13,27 +13,39 @@ fun main(args: Array<String>) {
         intArrayOf(0, 0, 2, 0, 0, 0, 6, 7, 0)
     )
     val i = ShortestPath()
-    i.dijkstra(graph, 0)
-    println("all my distance")
-    println(i.distanceList)
-    println("all the path")
-    i.path.forEach {
-        println(it)
-    }
+    var src = 1
+    i.dijkstra(graph, src)
 
-    var minimum = Int.MAX_VALUE
-    var minimumIndex = -1
-    for (x in graph.indices) {
+
+    println("make in order")
+
+    val isSure = MutableList(graph.size) { false }
+    for (X in graph.indices) {
+
+        println("all my distance")
+        println(i.distanceList)
+        println("all the path")
+        i.path.forEach {
+            println(it)
+        }
+        isSure[src] = true;
+        var minimum = Int.MAX_VALUE
+        var minimumIndex = -1
         i.distanceList.forEachIndexed { index, distance ->
-            if (distance < minimum) {
+            if (distance < minimum && !isSure[index]) {
                 minimum = distance
                 minimumIndex = index
             }
         }
+        if (minimumIndex != -1) {
+            println("here ${i.path[minimumIndex]}")
+            src = i.path[minimumIndex].last()
+            i.dijkstra(graph, src)
+        }
+
 
     }
-    }
-
+}
 
 
 internal class ShortestPath {
@@ -59,7 +71,7 @@ internal class ShortestPath {
         val isSure = MutableList(size) { false }
         path = MutableList(size) { mutableListOf(source) }
         distanceList = MutableList(size) { Int.MAX_VALUE }
-        distanceList[0] = source
+        distanceList[source] = 0
         for (i in 0 until size) {
             val minimumIndex = getMinimumIndex(distanceList, isSure)
             isSure[minimumIndex] = true
