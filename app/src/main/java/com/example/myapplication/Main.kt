@@ -23,13 +23,17 @@ fun main(args: Array<String>) {
 
     var minimum = Int.MAX_VALUE
     var minimumIndex = -1
-    i.distanceList.forEachIndexed { index, distance ->
-        if (distance < minimum) {
-            minimum = distance
-            minimumIndex = index
+    for (x in graph.indices) {
+        i.distanceList.forEachIndexed { index, distance ->
+            if (distance < minimum) {
+                minimum = distance
+                minimumIndex = index
+            }
         }
+
     }
-}
+    }
+
 
 
 internal class ShortestPath {
